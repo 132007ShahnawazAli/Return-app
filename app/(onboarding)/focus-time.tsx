@@ -1,0 +1,39 @@
+import { OnboardingShell } from '@/src/components/onboarding/OnboardingShell';
+import { SelectList } from '@/src/components/onboarding/SelectList';
+import { useAuthStore } from '@/src/stores/auth-store';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+
+const OPTIONS = [
+    { label: 'Morning', subtitle: '6 AM – 12 PM', value: 'morning' },
+    { label: 'Afternoon', subtitle: '12 PM – 6 PM', value: 'afternoon' },
+    { label: 'Evening', subtitle: '6 PM – 12 AM', value: 'evening' },
+    { label: 'Custom', subtitle: 'Set Duration', value: 'custom' },
+];
+
+export default function FocusTimeStep() {
+    const router = useRouter();
+    const setOnboarded = useAuthStore((s) => s.setOnboarded);
+    const [selected, setSelected] = useState<string | null>(null);
+
+    const handleContinue = async () => {
+        await setOnboarded(true);
+        router.replace('/(auth)/sign-in');
+    };
+
+    return (
+        <OnboardingShell
+            step={2}
+            totalSteps={3}
+            question="When do you want focused time?"
+            canContinue={!!selected}
+            onContinue={handleContinue}
+        >
+            <SelectList
+                options={OPTIONS}
+                selected={selected}
+                onSelect={setSelected}
+            />
+        </OnboardingShell>
+    );
+}

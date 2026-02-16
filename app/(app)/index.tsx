@@ -1,3 +1,5 @@
+// Home Screen
+
 import BookSetSvg from '@/assets/illustrations/bookSet.svg';
 import DinnerFoodSvg from '@/assets/illustrations/dinnerFood.svg';
 import DumbellsSvg from '@/assets/illustrations/dumbells.svg';

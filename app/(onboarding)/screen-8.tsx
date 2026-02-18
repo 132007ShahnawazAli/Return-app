@@ -1,33 +1,26 @@
 import { OnboardingShell } from '@/src/components/onboarding/OnboardingShell';
 import { SelectList } from '@/src/components/onboarding/SelectList';
-import { useAppStore } from '@/src/stores/app-store';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 
 const OPTIONS = [
-    { label: 'Morning', subtitle: '6 AM – 12 PM', value: 'morning' },
-    { label: 'Afternoon', subtitle: '12 PM – 6 PM', value: 'afternoon' },
-    { label: 'Evening', subtitle: '6 PM – 12 AM', value: 'evening' },
-    { label: 'Custom', subtitle: 'Set Duration', value: 'custom' },
+    { label: 'Option 1', value: 'opt1' },
+    { label: 'Option 2', value: 'opt2' },
+    { label: 'Option 3', value: 'opt3' },
+    { label: 'Option 4', value: 'opt4' },
 ];
 
-export default function FocusTimeStep() {
+export default function Screen8Step() {
     const router = useRouter();
-    const setOnboarded = useAppStore((s) => s.setOnboarded);
     const [selected, setSelected] = useState<string | null>(null);
-
-    const handleContinue = async () => {
-        await setOnboarded(true);
-        router.replace('/(app)');
-    };
 
     return (
         <OnboardingShell
-            step={9}
+            step={7}
             totalSteps={10}
-            question="When do you want focused time?"
+            question="One last check..."
             canContinue={!!selected}
-            onContinue={handleContinue}
+            onContinue={() => router.push('/(onboarding)/age')}
             showBack={false}
         >
             <SelectList

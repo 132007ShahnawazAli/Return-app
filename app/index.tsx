@@ -1,14 +1,13 @@
 // app/index.tsx — Smart entry gate
-// Redirects based on onboarding + auth state
-import { useAuthStore } from '@/src/stores/auth-store';
+// Redirects based on onboarding state
+import { useAppStore } from '@/src/stores/app-store';
 import { Redirect } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 export default function EntryGate() {
-  const isReady = useAuthStore((s) => s.isReady);
-  const isOnboarded = useAuthStore((s) => s.isOnboarded);
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isReady = useAppStore((s) => s.isReady);
+  const isOnboarded = useAppStore((s) => s.isOnboarded);
 
   // Still loading — show nothing (splash screen is visible)
   if (!isReady) {
@@ -24,11 +23,6 @@ export default function EntryGate() {
     return <Redirect href="/(onboarding)" />;
   }
 
-  // Not authenticated → send to sign in
-  if (!isAuthenticated) {
-    return <Redirect href="/(auth)/sign-in" />;
-  }
-
-  // Authenticated → send to app
+  // Onboarded → send to app
   return <Redirect href="/(app)" />;
 }

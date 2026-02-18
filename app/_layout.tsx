@@ -1,4 +1,4 @@
-import { AuthProvider } from '@/providers/AuthProvider';
+import { AppProvider } from '@/providers/AppProvider';
 import {
   DMSans_100Thin,
   DMSans_200ExtraLight,
@@ -44,14 +44,13 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <AuthProvider>
+        <AppProvider>
           <Stack screenOptions={{ headerShown: false, animation: 'fade' }}>
             <Stack.Screen name="index" />
             <Stack.Screen name="(onboarding)" />
-            <Stack.Screen name="(auth)" />
             <Stack.Screen name="(app)" />
           </Stack>
-        </AuthProvider>
+        </AppProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

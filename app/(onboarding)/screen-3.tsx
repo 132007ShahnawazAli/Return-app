@@ -4,26 +4,26 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 
 const OPTIONS = [
-    { label: 'Under 1 hour', value: 'under_1' },
-    { label: '1–3 hours', value: '1_3' },
-    { label: '3–4 hours', value: '3_4' },
-    { label: '4–5 hours', value: '4_5' },
-    { label: '5–7 hours', value: '5_7' },
-    { label: 'More than 7 hours', value: '7_plus' },
+    { label: 'Exercise', value: 'exercise' },
+    { label: 'Read books', value: 'read' },
+    { label: 'Work on a hobby', value: 'creative' },
+    { label: 'Spend time with family', value: 'social' },
+    { label: 'Go outside', value: 'outdoors' },
+    { label: 'Meditate', value: 'meditate' },
 ];
 
-export default function ScreenTimeStep() {
+export default function Screen3Step() {
     const router = useRouter();
     const [selected, setSelected] = useState<string | null>(null);
 
     return (
         <OnboardingShell
-            step={0}
+            step={2}
             totalSteps={10}
-            question="What is your daily average screen time?"
+            question="What is your goal?"
             canContinue={!!selected}
-            onContinue={() => router.push('/(onboarding)/screen-2')}
-            showBack={false}
+            onContinue={() => router.push('/(onboarding)/screen-4')}
+            showBack={true}
         >
             <SelectList
                 options={OPTIONS}

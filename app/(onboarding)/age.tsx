@@ -9,11 +9,12 @@ export default function AgeStep() {
 
     return (
         <OnboardingShell
-            step={1}
-            totalSteps={3}
+            step={8}
+            totalSteps={10}
             question="How old are you?"
             canContinue={true}
             onContinue={() => router.push('/(onboarding)/focus-time')}
+            showBack={false}
         >
             <NumberPicker
                 value={age}

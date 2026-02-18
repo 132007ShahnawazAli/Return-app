@@ -4,26 +4,26 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 
 const OPTIONS = [
-    { label: 'Under 1 hour', value: 'under_1' },
-    { label: '1–3 hours', value: '1_3' },
-    { label: '3–4 hours', value: '3_4' },
-    { label: '4–5 hours', value: '4_5' },
-    { label: '5–7 hours', value: '5_7' },
-    { label: 'More than 7 hours', value: '7_plus' },
+    { label: 'Tik Tok', value: 'tiktok' },
+    { label: 'Instagram', value: 'instagram' },
+    { label: 'Youtube', value: 'youtube' },
+    { label: 'Twitter', value: 'twitter' },
+    { label: 'Reddit', value: 'reddit' },
+
 ];
 
-export default function ScreenTimeStep() {
+export default function Screen2Step() {
     const router = useRouter();
     const [selected, setSelected] = useState<string | null>(null);
 
     return (
         <OnboardingShell
-            step={0}
+            step={1}
             totalSteps={10}
-            question="What is your daily average screen time?"
+            question="Select app which distract you" //here will be a select option then a block will be set from here, after onboarding process user will be ready to go
             canContinue={!!selected}
-            onContinue={() => router.push('/(onboarding)/screen-2')}
-            showBack={false}
+            onContinue={() => router.push('/(onboarding)/screen-3')}
+            showBack={true}
         >
             <SelectList
                 options={OPTIONS}

@@ -15,7 +15,6 @@ import { Work } from '@/src/components/icons/Work';
 import { AddBlockSheet } from '@/src/components/sheets/AddBlockSheet';
 import { RoutineDetailSheet } from '@/src/components/sheets/RoutineDetailSheet';
 import { colors } from '@/src/constants/colors';
-import { useAuthStore } from '@/src/stores/auth-store';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
@@ -98,8 +97,6 @@ function getWeekDays() {
 export default function HomeScreen() {
     const insets = useSafeAreaInsets();
     const router = useRouter();
-    const user = useAuthStore((s) => s.user);
-    const signOut = useAuthStore((s) => s.signOut);
     const weekDays = useMemo(() => getWeekDays(), []);
     const [activeIdea, setActiveIdea] = useState<IdeaKey | null>(null);
     const idea = activeIdea ? IDEA_DATA[activeIdea] : null;
@@ -110,10 +107,7 @@ export default function HomeScreen() {
         setActiveIdea(key);
     }, []);
 
-    const handleSignOut = async () => {
-        await signOut();
-        router.replace('/(auth)/sign-in');
-    };
+
 
     return (
         <View className="flex-1 bg-slate-100">
@@ -134,7 +128,7 @@ export default function HomeScreen() {
                     <Text className="text-lg font-bold text-slate-800">Logo</Text>
                     <View className="h-11 w-11 overflow-hidden rounded-full bg-slate-200">
                         <Image
-                            source={{ uri: 'https://picsum.photos/seed/picsum/100/100' }}
+                            source={{ uri: 'https://avatar.iran.liara.run/public' }}
                             className="h-full w-full"
                         />
                     </View>

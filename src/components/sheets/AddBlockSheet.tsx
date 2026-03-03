@@ -1,8 +1,9 @@
 import { colors } from '@/src/constants/colors';
+import { WEEKDAYS } from '@/src/constants/weekdays';
 import React, { useCallback, useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 
-const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
+
 
 interface AddBlockSheetProps {
     onAdd: () => void;

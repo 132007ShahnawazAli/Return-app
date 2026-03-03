@@ -20,7 +20,7 @@ export default function EntryGate() {
 
   // Not onboarded → send to onboarding
   if (!isOnboarded) {
-    return <Redirect href="/(onboarding)" />;
+    return <Redirect href="/(onboarding)/screen-1" />;
   }
 
   // Onboarded → send to app

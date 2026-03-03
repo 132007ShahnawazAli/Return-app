@@ -17,6 +17,7 @@ interface Props {
     showBack?: boolean;
     onBack?: () => void;
     hideFooter?: boolean;
+    hideSkip?: boolean;
     children: React.ReactNode;
 }
 
@@ -29,6 +30,7 @@ export function OnboardingShell({
     showBack = true,
     onBack,
     hideFooter = false,
+    hideSkip = false,
     children,
 }: Props) {
     const insets = useSafeAreaInsets();
@@ -48,33 +50,45 @@ export function OnboardingShell({
         <View className="flex-1 bg-sky-100" style={{ paddingTop: insets.top }}>
 
             {/* ── Header ── */}
-            <View className="flex-row items-center justify-between px-5 pb-4 pt-3">
-                {showBack ? (
-                    <TouchableOpacity
-                        onPress={handleBack}
-                        activeOpacity={0.6}
-                        className="h-10 w-10 items-center justify-center rounded-full bg-slate-100"
-                    >
-                        <ArrowLeft size={20} />
-                    </TouchableOpacity>
-                ) : (
-                    <View className="h-10 w-10" />
-                )}
+            <View className="flex-row items-center px-5 pb-4 h-16">
+                <View className="flex-1 items-start justify-center">
+                    {showBack ? (
+                        <TouchableOpacity
+                            onPress={handleBack}
+                            activeOpacity={0.6}
+                            className="h-10 w-10 items-center justify-center rounded-full bg-slate-100"
+                        >
+                            <ArrowLeft size={20} />
+                        </TouchableOpacity>
+                    ) : (
+                        <View className="h-10 w-10" />
+                    )}
+                </View>
 
-                <ProgressBar total={totalSteps} current={step} />
+                <View className="flex-1 items-center justify-center px-2">
+                    <ProgressBar total={totalSteps} current={step} />
+                </View>
 
-                <TouchableOpacity onPress={handleSkip} activeOpacity={0.7}>
-                    <Text className="text-lg font-semibold text-sky-500">Skip</Text>
-                </TouchableOpacity>
+                <View className="flex-1 items-end">
+                    {!hideSkip ? (
+                        <TouchableOpacity onPress={handleSkip} activeOpacity={0.7} className="px-2 py-1">
+                            <Text className="text-lg font-semibold text-sky-500">Skip</Text>
+                        </TouchableOpacity>
+                    ) : (
+                        <View className="h-10 w-10" />
+                    )}
+                </View>
             </View>
 
             {/* ── Content ── */}
-            <View className="flex-1 pt-8">
-                <View className="px-6">
-                    <Text className="text-center tracking-tight text-4xl font-medium text-slate-800">
-                        {question}
-                    </Text>
-                </View>
+            <View className="flex-1">
+                {!!question && (
+                    <View className="px-8 pt-8">
+                        <Text className="text-left tracking-tight text-4xl font-medium text-slate-800">
+                            {question}
+                        </Text>
+                    </View>
+                )}
 
                 <ScrollView
                     className="flex-1"

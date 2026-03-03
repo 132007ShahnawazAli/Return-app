@@ -1,21 +1,10 @@
 import { colors } from '@/src/constants/colors';
+import { WEEKDAYS } from '@/src/constants/weekdays';
+import { IdeaConfig } from '@/src/types/routine';
 import React, { useCallback, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
-const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
 
-interface IdeaConfig {
-    title: string;
-    subtitle: string;
-    time: string;
-    color: string;
-    lightColor: string;
-    btnColor: string;
-    btnBorder: string;
-    defaultDays: string[];
-    defaultDuration: number;
-    Illustration: React.FC<any>;
-}
 
 interface RoutineDetailSheetProps {
     idea: IdeaConfig;

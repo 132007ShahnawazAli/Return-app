@@ -44,12 +44,6 @@ export function SelectList({ options, selected, onSelect }: Props) {
                                 </Text>
                             ) : null}
                         </View>
-
-                        {/* {isActive && (
-                            <View className="ml-3 h-6 w-6 items-center justify-center rounded-full bg-sky-500">
-                                <Text className="text-xs font-bold text-slate-50">✓</Text>
-                            </View>
-                        )} */}
                     </TouchableOpacity>
                 );
             })}

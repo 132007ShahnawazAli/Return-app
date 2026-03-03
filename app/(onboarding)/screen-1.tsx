@@ -12,15 +12,15 @@ const OPTIONS = [
     { label: 'More than 7 hours', value: '7_plus' },
 ];
 
-export default function ScreenTimeStep() {
+export default function Screen1Step() {
     const router = useRouter();
     const [selected, setSelected] = useState<string | null>(null);
 
     return (
         <OnboardingShell
             step={0}
-            totalSteps={10}
-            question="What is your daily average screen time?"
+            totalSteps={8}
+            question="What's your average daily screen time?"
             canContinue={!!selected}
             onContinue={() => router.push('/(onboarding)/screen-2')}
             showBack={false}

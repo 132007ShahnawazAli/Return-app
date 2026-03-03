@@ -15,28 +15,15 @@ import { Work } from '@/src/components/icons/Work';
 import { AddBlockSheet } from '@/src/components/sheets/AddBlockSheet';
 import { RoutineDetailSheet } from '@/src/components/sheets/RoutineDetailSheet';
 import { colors } from '@/src/constants/colors';
+import { WEEKDAYS } from '@/src/constants/weekdays';
+import { IdeaConfig, IdeaKey } from '@/src/types/routine';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo, useState } from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
-const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] as const;
 
-type IdeaKey = 'workout' | 'dinner' | 'study';
-
-interface IdeaConfig {
-    title: string;
-    subtitle: string;
-    time: string;
-    color: string;
-    lightColor: string;
-    btnColor: string;
-    btnBorder: string;
-    defaultDays: string[];
-    defaultDuration: number;
-    Illustration: React.FC<any>;
-}
 
 const IDEA_DATA: Record<IdeaKey, IdeaConfig> = {
     workout: {
@@ -77,14 +64,14 @@ const IDEA_DATA: Record<IdeaKey, IdeaConfig> = {
     },
 };
 
-const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 
 function getWeekDays() {
     const today = new Date();
     const dayOfWeek = today.getDay(); // 0=Sun, 1=Mon …
     const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
 
-    return DAY_LABELS.map((label, i) => {
+    return WEEKDAYS.map((label, i) => {
         const date = new Date(today);
         date.setDate(today.getDate() + mondayOffset + i);
         const dayNum = date.getDate();

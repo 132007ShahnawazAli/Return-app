@@ -1,9 +1,10 @@
 // drizzle.config.ts (in root folder)
-import type { Config } from 'drizzle-kit';
+// @ts-nocheck — drizzle-kit v0.18 types are incomplete
 
+/** @type {import('drizzle-kit').Config} */
 export default {
     schema: './src/db/schema.ts',
     out: './drizzle',
     driver: 'expo',
     dialect: 'sqlite',
-} satisfies Config;
+};

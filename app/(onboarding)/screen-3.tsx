@@ -19,7 +19,7 @@ export default function Screen3Step() {
     return (
         <OnboardingShell
             step={2}
-            totalSteps={10}
+            totalSteps={7}
             question="What is your goal?"
             canContinue={!!selected}
             onContinue={() => router.push('/(onboarding)/screen-4')}

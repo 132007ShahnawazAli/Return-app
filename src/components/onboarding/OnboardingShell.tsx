@@ -17,6 +17,7 @@ interface Props {
     showBack?: boolean;
     onBack?: () => void;
     hideFooter?: boolean;
+    scrollEnabled?: boolean;
     children: React.ReactNode;
 }
 
@@ -29,6 +30,7 @@ export function OnboardingShell({
     showBack = true,
     onBack,
     hideFooter = false,
+    scrollEnabled = true,
     children,
 }: Props) {
     const insets = useSafeAreaInsets();
@@ -70,25 +72,33 @@ export function OnboardingShell({
 
             {/* ── Content ── */}
             <View className="flex-1 pt-8">
-                <View className="px-6">
-                    <Text className="text-center tracking-tight text-4xl font-medium text-slate-800">
-                        {question}
-                    </Text>
-                </View>
+                {question ? (
+                    <View className="px-6 mt-4 mb-2">
+                        <Text className="text-center tracking-tight text-4xl font-medium text-slate-800">
+                            {question}
+                        </Text>
+                    </View>
+                ) : null}
 
-                <ScrollView
-                    className="flex-1"
-                    contentContainerStyle={{
-                        flexGrow: 1,
-                        justifyContent: 'center',
-                        paddingVertical: 24,
-                        paddingHorizontal: 24,
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handled"
-                >
-                    {children}
-                </ScrollView>
+                {scrollEnabled ? (
+                    <ScrollView
+                        className="flex-1"
+                        contentContainerStyle={{
+                            flexGrow: 1,
+                            justifyContent: 'center',
+                            paddingVertical: 24,
+                            paddingHorizontal: 24,
+                        }}
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="handled"
+                    >
+                        {children}
+                    </ScrollView>
+                ) : (
+                    <View className="flex-1 px-6 py-4">
+                        {children}
+                    </View>
+                )}
             </View>
 
             {/* ── Footer ── */}

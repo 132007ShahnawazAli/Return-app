@@ -17,7 +17,7 @@ export default function Screen4Step() {
     return (
         <OnboardingShell
             step={3}
-            totalSteps={10}
+            totalSteps={7}
             question="How many times do you unlock your phone daily?"
             canContinue={!!selected}
             onContinue={() => router.push('/(onboarding)/screen-5')}

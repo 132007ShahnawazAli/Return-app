@@ -17,11 +17,13 @@ interface BottomSheetProps {
     visible: boolean;
     onClose: () => void;
     children: React.ReactNode;
+    /** Override the default 'bg-white' sheet surface, e.g. 'bg-slate-50' */
+    sheetClassName?: string;
 }
 
 const TIMING_CONFIG = { duration: 300, easing: Easing.bezier(0.25, 0.1, 0.25, 1) };
 
-export function BottomSheet({ visible, onClose, children }: BottomSheetProps) {
+export function BottomSheet({ visible, onClose, children, sheetClassName }: BottomSheetProps) {
     const translateY = useSharedValue(SHEET_HEIGHT);
     const backdropOpacity = useSharedValue(0);
 
@@ -69,7 +71,7 @@ export function BottomSheet({ visible, onClose, children }: BottomSheetProps) {
 
             <GestureDetector gesture={panGesture}>
                 <Animated.View
-                    className="bg-white rounded-t-[32px] px-6 pb-10"
+                    className={`${sheetClassName || 'bg-white'} rounded-t-[32px] px-6 pb-10`}
                     style={[styles.sheetLayout, sheetStyle]}
                 >
                     <View className="items-center pt-3.5 pb-2">

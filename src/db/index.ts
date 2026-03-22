@@ -1,9 +1,9 @@
-// src/db/index.ts
-import { drizzle } from 'drizzle-orm/expo-sqlite';
-import { openDatabaseSync } from 'expo-sqlite';
+// ─── Legacy Database Entry Point ──────────────────────────────────────────
+// This file is DEPRECATED. All new code should import from:
+//   @/src/database/db
+//
+// This re-export exists only for backward compatibility with any remaining
+// references. It now delegates to the new database module to avoid
+// opening a second SQLite connection.
 
-// Open SQLite database (creates if doesn't exist)
-const expoDb = openDatabaseSync('screentime.db', { enableChangeListener: true });
-
-// Create Drizzle instance (schema passed at query time, not constructor)
-export const db = drizzle(expoDb);
+export { db } from '@/src/database/db';

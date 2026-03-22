@@ -16,15 +16,14 @@ export default function FocusTimeStep() {
     const setOnboarded = useAppStore((s) => s.setOnboarded);
     const [selected, setSelected] = useState<string | null>(null);
 
-    const handleContinue = async () => {
-        await setOnboarded(true);
-        router.replace('/(app)');
+    const handleContinue = () => {
+        router.push('/(onboarding)/screen-9');
     };
 
     return (
         <OnboardingShell
-            step={9}
-            totalSteps={10}
+            step={6}
+            totalSteps={7}
             question="When do you want focused time?"
             canContinue={!!selected}
             onContinue={handleContinue}

@@ -1,88 +1,66 @@
-import { db } from '@/src/db';
-import { settings } from '@/src/db/schema';
-import { eq } from 'drizzle-orm';
+// ─── App Store ────────────────────────────────────────────────────────────
+// Zustand store for NON-AUTH app state:
+//   • Database initialisation & readiness
+//   • Onboarding completion status
+//
+// Authentication is handled entirely by AuthContext / useAuth().
+// This store does NOT hold user, session, or auth-related state.
+
+import { initDatabase } from '@/src/database/db';
+import { settingsRepo } from '@/src/database/repositories';
 import { create } from 'zustand';
 
-// ─── Types ───────────────────────────────────────────────────────────
-interface AppState {
-    // State
-    isOnboarded: boolean;
-    isReady: boolean;
+// ── State Interface ───────────────────────────────────────────────────────
 
-    // Actions
+interface AppState {
+    /** True once the database has been initialised and settings read. */
+    isReady: boolean;
+    /** Non-null if startup failed. */
+    initError: string | null;
+    /** True once the user has completed onboarding. */
+    isOnboarded: boolean;
+
+    /** Initialise the database and hydrate settings. */
     initialize: () => Promise<void>;
+    /** Mark onboarding as complete or incomplete (persists to SQLite). */
     setOnboarded: (value: boolean) => Promise<void>;
 }
 
-// ─── Settings Helpers ────────────────────────────────────────────────
-async function ensureSettingsTable() {
-    try {
-        // Create settings table if it doesn't exist
-        const sqliteDb = (db as any).$client;
-        sqliteDb.execSync(
-            `CREATE TABLE IF NOT EXISTS settings (
-        key TEXT PRIMARY KEY NOT NULL,
-        value TEXT NOT NULL
-      );`
-        );
-    } catch (error) {
-        console.error('Failed to ensure settings table:', error);
-    }
-}
+// ── Store ─────────────────────────────────────────────────────────────────
 
-async function getSetting(key: string): Promise<string | null> {
-    try {
-        const result = await db
-            .select()
-            .from(settings)
-            .where(eq(settings.key, key))
-            .limit(1);
-
-        return result.length > 0 ? result[0].value : null;
-    } catch {
-        return null;
-    }
-}
-
-async function setSetting(key: string, value: string): Promise<void> {
-    try {
-        await db
-            .insert(settings)
-            .values({ key, value })
-            .onConflictDoUpdate({
-                target: settings.key,
-                set: { value },
-            });
-    } catch (error) {
-        console.error(`Failed to set setting ${key}:`, error);
-    }
-}
-
-// ─── Store ───────────────────────────────────────────────────────────
 export const useAppStore = create<AppState>((set) => ({
-    isOnboarded: false,
     isReady: false,
+    initError: null,
+    isOnboarded: false,
 
+    // ── Initialize ──────────────────────────────────────────────────────
     initialize: async () => {
         try {
-            // Ensure database table exists
-            await ensureSettingsTable();
+            // 1. Initialise the local database (runs migrations).
+            await initDatabase();
 
-            // Check onboarding status from SQLite
-            const onboarded = await getSetting('has_onboarded');
+            // 2. Read persisted onboarding status.
+            const onboardedResult = await settingsRepo.getSetting('has_onboarded');
+            const isOnboarded =
+                onboardedResult.success && onboardedResult.data === 'true';
 
-            set({
-                isOnboarded: onboarded === 'true',
-                isReady: true,
-            });
+            // 3. Mark app as ready.
+            set({ isReady: true, isOnboarded, initError: null });
+
+            console.log(`[AppStore] Initialised — onboarded: ${isOnboarded}`);
         } catch (error) {
-            console.error('App initialization failed:', error);
-            set({ isReady: true }); // Still mark as ready so app doesn't hang
+            const message =
+                error instanceof Error ? error.message : 'Unknown initialization error';
+            console.error('[AppStore] Initialization failed:', message);
+
+            // Still mark as ready so the app doesn't hang on the splash screen.
+            set({ isReady: true, initError: message });
         }
     },
 
+    // ── Onboarding ──────────────────────────────────────────────────────
     setOnboarded: async (value) => {
-        await setSetting('has_onboarded', value ? 'true' : 'false');
+        await settingsRepo.setSetting('has_onboarded', value ? 'true' : 'false');
         set({ isOnboarded: value });
     },
 }));

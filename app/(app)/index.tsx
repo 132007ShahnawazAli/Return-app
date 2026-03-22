@@ -13,6 +13,7 @@ import { Plus } from '@/src/components/icons/Plus';
 import { Study } from '@/src/components/icons/Study';
 import { Work } from '@/src/components/icons/Work';
 import { AddBlockSheet } from '@/src/components/sheets/AddBlockSheet';
+import { AddSelectionSheet } from '@/src/components/sheets/AddSelectionSheet';
 import { RoutineDetailSheet } from '@/src/components/sheets/RoutineDetailSheet';
 import { colors } from '@/src/constants/colors';
 import { useRouter } from 'expo-router';
@@ -102,6 +103,7 @@ export default function HomeScreen() {
     const idea = activeIdea ? IDEA_DATA[activeIdea] : null;
 
     const [showAddSheet, setShowAddSheet] = useState(false);
+    const [addSheetFlow, setAddSheetFlow] = useState<'selection' | 'form'>('selection');
 
     const openIdea = useCallback((key: IdeaKey) => {
         setActiveIdea(key);
@@ -110,7 +112,7 @@ export default function HomeScreen() {
 
 
     return (
-        <View className="flex-1 bg-slate-100">
+        <View className="flex-1 bg-sky-100">
             <ScrollView
                 className="flex-1"
                 contentContainerStyle={{
@@ -178,8 +180,8 @@ export default function HomeScreen() {
                         </View>
                     </View>
                     <View className="flex-1 rounded-[30px] bg-sky-300 p-5 overflow-hidden" style={{ minHeight: 180, flexBasis: 0 }}>
-                        <Text className="text-3xl font-bold tracking-tighter text-sky-900">87%</Text>
-                        <Text className=" text-sm font-medium text-sky-950 opacity-60">Focus Score</Text>
+                        <Text className="text-3xl font-bold tracking-tighter text-sky-900">12 days</Text>
+                        <Text className=" text-sm font-medium text-sky-950 opacity-60">Streak</Text>
                         <View style={{ position: 'absolute', bottom: 7, right: 14 }}>
                             <FocusPebbleSvg width={95} height={96} />
                         </View>
@@ -341,15 +343,38 @@ export default function HomeScreen() {
             )}
 
             {/* Bottom Sheet */}
-            <BottomSheet visible={activeIdea !== null} onClose={() => setActiveIdea(null)}>
+            <BottomSheet visible={activeIdea !== null} onClose={() => setActiveIdea(null)} sheetClassName="bg-slate-50">
                 {idea && (
                     <RoutineDetailSheet idea={idea} onClose={() => setActiveIdea(null)} />
                 )}
             </BottomSheet>
 
-            {/* Add Block Sheet */}
-            <BottomSheet visible={showAddSheet} onClose={() => setShowAddSheet(false)}>
-                <AddBlockSheet onAdd={() => setShowAddSheet(false)} />
+            {/* Add Block Flow Sheet */}
+            <BottomSheet
+                visible={showAddSheet}
+                sheetClassName="bg-sky-100"
+                onClose={() => {
+                    setShowAddSheet(false);
+                    // Reset flow after a delay to avoid flickers during closing animation
+                    setTimeout(() => setAddSheetFlow('selection'), 300);
+                }}
+            >
+                {addSheetFlow === 'selection' ? (
+                    <AddSelectionSheet
+                        onSelectBlockNow={() => setAddSheetFlow('form')}
+                        onSelectCreateSchedule={() => setAddSheetFlow('form')}
+                        onSelectSetTimeLimit={() => setAddSheetFlow('form')}
+                        onSelectSetOpenLimit={() => setAddSheetFlow('form')}
+                    />
+                ) : (
+                    <AddBlockSheet
+                        onAdd={() => {
+                            setShowAddSheet(false);
+                            setTimeout(() => setAddSheetFlow('selection'), 300);
+                        }}
+                        onBack={() => setAddSheetFlow('selection')}
+                    />
+                )}
             </BottomSheet>
         </View>
     );

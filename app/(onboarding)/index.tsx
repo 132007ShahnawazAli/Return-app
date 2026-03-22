@@ -19,7 +19,7 @@ export default function ScreenTimeStep() {
     return (
         <OnboardingShell
             step={0}
-            totalSteps={10}
+            totalSteps={7}
             question="What is your daily average screen time?"
             canContinue={!!selected}
             onContinue={() => router.push('/(onboarding)/screen-2')}
